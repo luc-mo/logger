@@ -1,0 +1,42 @@
+{
+	"name": "@snowdrive/logger",
+	"version": "1.0.0",
+	"description": "Decorador de TypeScript para automatizar logs y trazar ejecución en métodos y clases.",
+	"keywords": [
+		"logger",
+		"decorator",
+		"typescript",
+		"tracing"
+	],
+	"author": "Luciano Morales",
+	"license": "MIT",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"scripts": {
+		"build": "tsup",
+		"lint": "biome check . --write",
+		"format": "biome format --write .",
+		"lint:check": "biome check .",
+		"format:check": "biome format ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.4",
+		"@snowdrive/biome-config": "1.0.0",
+		"@types/node": "25.3.2",
+		"tsup": "8.5.1",
+		"typescript": "5.9.3"
+	},
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
+	}
+}
