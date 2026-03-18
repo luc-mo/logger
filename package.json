@@ -1,6 +1,8 @@
 {
 	"name": "@snowdrive/logger",
-	"version": "1.0.0",
+	"version": "1.0.1",
+	"author": "Luciano Morales",
+	"license": "MIT",
 	"description": "Decorador de TypeScript para automatizar logs y trazar ejecución en métodos y clases.",
 	"keywords": [
 		"logger",
@@ -8,8 +10,10 @@
 		"typescript",
 		"tracing"
 	],
-	"author": "Luciano Morales",
-	"license": "MIT",
+	"publishConfig": {
+		"access": "public",
+		"tag": "latest"
+	},
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",

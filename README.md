@@ -1,6 +1,6 @@
 # @snowdrive/logger
 
-Utilidad para automatizar el registro de logs mediante decoradores. Inyecta identificadores de trazabilidad (traceId), extrae parámetros y mide tiempos de ejecución de las funciones automáticamente.
+Utilidad para automatizar el registro de logs mediante decoradores. Inyecta identificadores de trazabilidad, extrae parámetros y mide tiempos de ejecución de las funciones automáticamente.
 
 [![npm latest package](https://img.shields.io/npm/v/@snowdrive/logger/latest?color=blue)](https://www.npmjs.com/package/@snowdrive/logger)
 
