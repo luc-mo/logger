@@ -17,6 +17,8 @@
     "useUnknownInCatchVariables": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "sourceMap": true,
     "skipLibCheck": false,
     "isolatedModules": true,
