@@ -1,5 +1,6 @@
 .vscode
 node_modules
+examples
 src
 biome.json
 pnpm-lock.yaml

@@ -1,6 +1,6 @@
 {
 	"name": "@snowdrive/logger",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"author": "Luciano Morales",
 	"license": "MIT",
 	"description": "Decorador de TypeScript para automatizar logs y trazar ejecución en métodos y clases.",
@@ -22,6 +22,9 @@
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
 	"scripts": {
+		"example:express": "tsx watch ./examples/express.ts",
+		"example:nestjs": "tsx watch ./examples/nestjs.ts",
+		"example:winston": "tsx watch ./examples/winston.ts",
 		"build": "tsup",
 		"lint": "biome check . --write",
 		"format": "biome format --write .",
@@ -30,10 +33,18 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.4.4",
+		"@nestjs/common": "11.1.17",
+		"@nestjs/core": "11.1.17",
+		"@nestjs/platform-express": "11.1.17",
 		"@snowdrive/biome-config": "1.0.0",
+		"@types/express": "5.0.6",
 		"@types/node": "25.3.2",
+		"express": "5.2.1",
+		"reflect-metadata": "0.2.2",
 		"tsup": "8.5.1",
-		"typescript": "5.9.3"
+		"tsx": "4.21.0",
+		"typescript": "5.9.3",
+		"winston": "3.19.0"
 	},
 	"exports": {
 		".": {
