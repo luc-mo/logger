@@ -17,6 +17,13 @@ export type ILoggerDecorator = ((params: ILoggerParams) => IDualDecorator) & {
 	 * @param params Objeto con el nivel de log (`level`) y la instancia del logger (`logger`).
 	 */
 	config: (params: ILoggerConfig) => void
+
+	fatal: ILogFunction
+	error: ILogFunction
+	warn: ILogFunction
+	info: ILogFunction
+	debug: ILogFunction
+	trace: ILogFunction
 }
 
 export interface ILoggerParams {

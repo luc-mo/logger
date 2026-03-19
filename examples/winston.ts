@@ -20,7 +20,7 @@ declare module 'winston' {
 /**
  * Configuramos el logger de Winston con formato y niveles personalizados.
  */
-export const winstonLogger = createLogger({
+const winstonLogger = createLogger({
 	/**
 	 * Definimos el nivel de loggeo como trace para que la
 	 * responsabilidad de loggear la tenga el decorador y no el logger.
@@ -39,7 +39,7 @@ export const winstonLogger = createLogger({
 /**
  * Configuramos el logger globalmente con un nivel DEBUG (el nivel por defecto es INFO).
  */
-Logger.config({ level: 'DEBUG' })
+Logger.config({ level: 'DEBUG', logger: winstonLogger })
 
 /**
  * Decoramos todos los métodos de la clase con nivel DEBUG.

@@ -68,7 +68,22 @@ LoggerDecorator.context = LoggerConfig.context
 
 LoggerDecorator.config = ({ level, logger }) => {
 	if (level) LoggerConfig.level = level
-	if (logger) LoggerConfig.logger = logger
+	if (logger) {
+		LoggerConfig.logger = logger
+		LoggerDecorator.fatal = logger.fatal.bind(logger)
+		LoggerDecorator.error = logger.error.bind(logger)
+		LoggerDecorator.warn = logger.warn.bind(logger)
+		LoggerDecorator.info = logger.info.bind(logger)
+		LoggerDecorator.debug = logger.debug.bind(logger)
+		LoggerDecorator.trace = logger.trace.bind(logger)
+	}
 }
+
+LoggerDecorator.fatal = console.error
+LoggerDecorator.error = console.error
+LoggerDecorator.warn = console.warn
+LoggerDecorator.info = console.info
+LoggerDecorator.debug = console.debug
+LoggerDecorator.trace = console.trace
 
 export { LoggerDecorator as Logger }
