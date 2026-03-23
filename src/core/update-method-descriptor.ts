@@ -1,3 +1,4 @@
+import { LoggerConfig } from '@/core/config'
 import { LoggerUtils } from '@/utils'
 import type { ILogSeverity, IMethodParams } from '@/types/logger'
 
@@ -28,9 +29,11 @@ export const updateMethodDescriptor = (
 		const extractedTraceId = LoggerUtils.extractTraceId()
 		const extractedParams = LoggerUtils.extractMethodParams(args, params)
 
-		logCaller(
-			`[${className}] method=${methodName} ${extractedTraceId} event=STARTED ${extractedParams}`
-		)
+		if (LoggerConfig.logEvents.start) {
+			logCaller(
+				`[${className}] method=${methodName} ${extractedTraceId} event=STARTED ${extractedParams}`
+			)
+		}
 
 		const extractDuration = LoggerUtils.durationCalculator()
 
@@ -39,26 +42,34 @@ export const updateMethodDescriptor = (
 			if (returnValue instanceof Promise) {
 				return returnValue
 					.then((result) => {
-						logCaller(
-							`[${className}] method=${methodName} ${extractedTraceId} event=COMPLETED ${extractDuration()}`
-						)
+						if (LoggerConfig.logEvents.complete) {
+							logCaller(
+								`[${className}] method=${methodName} ${extractedTraceId} event=COMPLETED ${extractDuration()}`
+							)
+						}
 						return result
 					})
 					.catch((error) => {
-						errorLogCaller(
-							`[${className}] method=${methodName} ${extractedTraceId} event=FAILED ${extractDuration()} error=${error?.message ?? 'Unknown error'}`
-						)
+						if (LoggerConfig.logEvents.error) {
+							errorLogCaller(
+								`[${className}] method=${methodName} ${extractedTraceId} event=FAILED ${extractDuration()} error=${error?.message ?? 'Unknown error'}`
+							)
+						}
 						throw error
 					})
 			}
-			logCaller(
-				`[${className}] method=${methodName} ${extractedTraceId} event=COMPLETED ${extractDuration()}`
-			)
+			if (LoggerConfig.logEvents.complete) {
+				logCaller(
+					`[${className}] method=${methodName} ${extractedTraceId} event=COMPLETED ${extractDuration()}`
+				)
+			}
 			return returnValue
 		} catch (error: any) {
-			errorLogCaller(
-				`[${className}] method=${methodName} ${extractedTraceId} event=FAILED ${extractDuration()} error=${error?.message ?? 'Unknown error'}`
-			)
+			if (LoggerConfig.logEvents.error) {
+				errorLogCaller(
+					`[${className}] method=${methodName} ${extractedTraceId} event=FAILED ${extractDuration()} error=${error?.message ?? 'Unknown error'}`
+				)
+			}
 			throw error
 		}
 	}

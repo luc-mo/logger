@@ -66,9 +66,16 @@ const LoggerDecorator: ILoggerDecorator = ({ severity, params }: ILoggerParams) 
 
 LoggerDecorator.context = LoggerConfig.context
 
-LoggerDecorator.config = ({ level, logger }) => {
+LoggerDecorator.config = ({ level, logger, logEvents }) => {
 	if (level) LoggerConfig.level = level
 	if (logger) LoggerConfig.logger = logger
+	if (logEvents) {
+		LoggerConfig.logEvents = {
+			start: logEvents.start ?? LoggerConfig.logEvents.start,
+			complete: logEvents.complete ?? LoggerConfig.logEvents.complete,
+			error: logEvents.error ?? LoggerConfig.logEvents.error,
+		}
+	}
 }
 
 LoggerDecorator.fatal = LoggerUtils.logLevelCaller('FATAL')

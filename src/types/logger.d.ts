@@ -76,7 +76,20 @@ export interface ILoggerConfig {
 	 * Instancia personalizada encargada de formatear y emitir los logs.
 	 */
 	logger?: ILoggerInstance
+
+	/**
+	 * Configuración para determinar qué eventos de un método decorado deben ser registrados.
+	 * Permite activar o desactivar el registro de logs al inicio, al completar exitosamente
+	 * o al lanzar una excepción en un método decorado.
+	 */
+	logEvents?: Partial<ILogEvents>
 }
+
+/**
+ * Niveles de severidad soportados para la emisión de logs.
+ * Ordenados de mayor a menor criticidad.
+ */
+export type ILogSeverity = 'FATAL' | 'ERROR' | 'WARN' | 'INFO' | 'DEBUG' | 'TRACE'
 
 export interface ILoggerInstance {
 	fatal: ILogFunction
@@ -89,8 +102,20 @@ export interface ILoggerInstance {
 
 export type ILogFunction = (message: string, ...meta: any[]) => void
 
-/**
- * Niveles de severidad soportados para la emisión de logs.
- * Ordenados de mayor a menor criticidad.
- */
-export type ILogSeverity = 'FATAL' | 'ERROR' | 'WARN' | 'INFO' | 'DEBUG' | 'TRACE'
+export interface ILogEvents {
+	/**
+	 * Indica si se debe registrar un log al inicio de la ejecución de un método.
+	 * @default true
+	 */
+	start: boolean
+	/**
+	 * Indica si se debe registrar un log al completar exitosamente la ejecución de un método.
+	 * @default true
+	 */
+	complete: boolean
+	/**
+	 * Indica si se debe registrar un log cuando un método decorado lanza una excepción.
+	 * @default true
+	 */
+	error: boolean
+}
