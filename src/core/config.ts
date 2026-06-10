@@ -12,8 +12,9 @@ export class LoggerConfig {
 		debug: console.debug,
 		trace: console.trace,
 	}
+	public static logPrivateMethods: boolean = false
 	public static logEvents: ILogEvents = {
-		start: true,
+		start: false,
 		complete: true,
 		error: true,
 	}

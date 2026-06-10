@@ -78,6 +78,12 @@ export interface ILoggerConfig {
 	logger?: ILoggerInstance
 
 	/**
+	 * Indica si se deben incluir en los logs los métodos cuyo nombre
+	 * comienza con un guion bajo (`_`), considerados privados por convención.
+	 */
+	logPrivateMethods?: boolean
+
+	/**
 	 * Configuración para determinar qué eventos de un método decorado deben ser registrados.
 	 * Permite activar o desactivar el registro de logs al inicio, al completar exitosamente
 	 * o al lanzar una excepción en un método decorado.
@@ -105,7 +111,7 @@ export type ILogFunction = (message: string, ...meta: any[]) => void
 export interface ILogEvents {
 	/**
 	 * Indica si se debe registrar un log al inicio de la ejecución de un método.
-	 * @default true
+	 * @default false
 	 */
 	start: boolean
 	/**

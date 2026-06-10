@@ -1,10 +1,16 @@
 import { LoggerConstants } from '@/core/constants'
+import { LoggerConfig } from '@/core/config'
+
+const _filterPropertyName = (name: string) => {
+	const isNotConstructor = name !== 'constructor'
+	const isPublic = !name.startsWith('_')
+	const shouldLog = LoggerConfig.logPrivateMethods || isPublic
+	return isNotConstructor && shouldLog
+}
 
 export const getMethodDescriptors = (target: Function) => {
 	const allPropertyNames = Object.getOwnPropertyNames(target.prototype)
-	const propertyNames = allPropertyNames.filter(
-		(name) => name !== 'constructor' && !name.startsWith('_')
-	)
+	const propertyNames = allPropertyNames.filter(_filterPropertyName)
 	return propertyNames
 		.map((methodName) => {
 			const descriptor = Object.getOwnPropertyDescriptor(target.prototype, methodName)

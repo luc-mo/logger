@@ -66,10 +66,13 @@ const LoggerDecorator: ILoggerDecorator = ({ severity, params }: ILoggerParams) 
 
 LoggerDecorator.context = LoggerConfig.context
 
-LoggerDecorator.config = ({ level, logger, logEvents }) => {
+LoggerDecorator.config = ({ level, logPrivateMethods, logger, logEvents }) => {
 	if (level) LoggerConfig.level = level
 	if (logger) LoggerConfig.logger = logger
-	if (logEvents) {
+	if (logPrivateMethods !== undefined) {
+		LoggerConfig.logPrivateMethods = logPrivateMethods
+	}
+	if (logEvents !== undefined) {
 		LoggerConfig.logEvents = {
 			start: logEvents.start ?? LoggerConfig.logEvents.start,
 			complete: logEvents.complete ?? LoggerConfig.logEvents.complete,
