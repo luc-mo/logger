@@ -14,7 +14,7 @@ export class LogBuilder {
 		return this
 	}
 
-	public appendParam(paramName: string, paramValue: string): LogBuilder {
+	public appendParam(paramName: string, paramValue: string | null | undefined): LogBuilder {
 		if (!paramValue) return this
 		return this.append(`${paramName}="${this._escapeQuotes(paramValue)}"`)
 	}

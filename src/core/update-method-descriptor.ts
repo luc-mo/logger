@@ -27,20 +27,20 @@ export const updateMethodDescriptor = (
 	const errorLogCaller = LoggerUtils.logLevelCaller('ERROR')
 
 	return function <T>(this: T, ...args: any[]) {
-		const extractedTraceId = LoggerUtils.extractTraceId()
+		const traceId = LoggerConfig.context.getStore()
 		const extractedParams = LoggerUtils.extractMethodParams(args, params)
 
 		if (LoggerConfig.logEvents.start) {
 			const log = new LogBuilder(`[${className}]`)
 				.appendParam('method', methodName)
-				.appendParam('traceId', extractedTraceId.message)
+				.appendParam('traceId', traceId)
 				.appendParam('event', 'STARTED')
 				.append(extractedParams.message)
 				.build()
 			logCaller(log, {
 				className,
 				methodName,
-				traceId: extractedTraceId.traceId,
+				traceId,
 				params: extractedParams.params,
 				event: 'STARTED',
 			})
@@ -57,14 +57,14 @@ export const updateMethodDescriptor = (
 							const extractedDuration = extractDuration()
 							const log = new LogBuilder(`[${className}]`)
 								.appendParam('method', methodName)
-								.appendParam('traceId', extractedTraceId.message)
+								.appendParam('traceId', traceId)
 								.appendParam('event', 'COMPLETED')
 								.appendParam('duration', extractedDuration.message)
 								.build()
 							logCaller(log, {
 								className,
 								methodName,
-								traceId: extractedTraceId.traceId,
+								traceId,
 								params: extractedParams.params,
 								duration: extractedDuration.duration,
 								event: 'COMPLETED',
@@ -75,20 +75,21 @@ export const updateMethodDescriptor = (
 					.catch((error) => {
 						if (LoggerConfig.logEvents.error) {
 							const extractedDuration = extractDuration()
+							const extractedError = error?.message ?? 'Unknown error'
 							const log = new LogBuilder(`[${className}]`)
 								.appendParam('method', methodName)
-								.appendParam('traceId', extractedTraceId.message)
+								.appendParam('traceId', traceId)
 								.appendParam('event', 'FAILED')
 								.appendParam('duration', extractedDuration.message)
-								.appendParam('error', error?.message ?? 'Unknown error')
+								.appendParam('error', extractedError)
 								.build()
 							errorLogCaller(log, {
 								className,
 								methodName,
-								traceId: extractedTraceId.traceId,
+								traceId,
 								params: extractedParams.params,
 								duration: extractedDuration.duration,
-								error: error?.message ?? 'Unknown error',
+								error: extractedError,
 								event: 'FAILED',
 							})
 						}
@@ -99,14 +100,14 @@ export const updateMethodDescriptor = (
 				const extractedDuration = extractDuration()
 				const log = new LogBuilder(`[${className}]`)
 					.appendParam('method', methodName)
-					.appendParam('traceId', extractedTraceId.message)
+					.appendParam('traceId', traceId)
 					.appendParam('event', 'COMPLETED')
 					.appendParam('duration', extractedDuration.message)
 					.build()
 				logCaller(log, {
 					className,
 					methodName,
-					traceId: extractedTraceId.traceId,
+					traceId,
 					params: extractedParams.params,
 					duration: extractedDuration.duration,
 					event: 'COMPLETED',
@@ -116,20 +117,21 @@ export const updateMethodDescriptor = (
 		} catch (error: any) {
 			if (LoggerConfig.logEvents.error) {
 				const extractedDuration = extractDuration()
+				const extractedError = error?.message ?? 'Unknown error'
 				const log = new LogBuilder(`[${className}]`)
 					.appendParam('method', methodName)
-					.appendParam('traceId', extractedTraceId.message)
+					.appendParam('traceId', traceId)
 					.appendParam('event', 'FAILED')
 					.appendParam('duration', extractedDuration.message)
-					.appendParam('error', error?.message ?? 'Unknown error')
+					.appendParam('error', extractedError)
 					.build()
 				errorLogCaller(log, {
 					className,
 					methodName,
-					traceId: extractedTraceId.traceId,
+					traceId,
 					params: extractedParams.params,
 					duration: extractedDuration.duration,
-					error: error?.message ?? 'Unknown error',
+					error: extractedError,
 					event: 'FAILED',
 				})
 			}
