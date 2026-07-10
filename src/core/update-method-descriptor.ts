@@ -1,4 +1,5 @@
 import { LoggerConfig } from '@/core/config'
+import { LogBuilder } from './log-builder'
 import { LoggerUtils } from '@/utils'
 import type { ILogSeverity, IMethodParams } from '@/types/logger'
 
@@ -30,9 +31,19 @@ export const updateMethodDescriptor = (
 		const extractedParams = LoggerUtils.extractMethodParams(args, params)
 
 		if (LoggerConfig.logEvents.start) {
-			logCaller(
-				`[${className}] method=${methodName} ${extractedTraceId} event=STARTED ${extractedParams}`
-			)
+			const log = new LogBuilder(`[${className}]`)
+				.appendParam('method', methodName)
+				.appendParam('traceId', extractedTraceId.message)
+				.appendParam('event', 'STARTED')
+				.append(extractedParams.message)
+				.build()
+			logCaller(log, {
+				className,
+				methodName,
+				traceId: extractedTraceId.traceId,
+				params: extractedParams.params,
+				event: 'STARTED',
+			})
 		}
 
 		const extractDuration = LoggerUtils.durationCalculator()
@@ -43,32 +54,84 @@ export const updateMethodDescriptor = (
 				return returnValue
 					.then((result) => {
 						if (LoggerConfig.logEvents.complete) {
-							logCaller(
-								`[${className}] method=${methodName} ${extractedTraceId} event=COMPLETED ${extractDuration()}`
-							)
+							const extractedDuration = extractDuration()
+							const log = new LogBuilder(`[${className}]`)
+								.appendParam('method', methodName)
+								.appendParam('traceId', extractedTraceId.message)
+								.appendParam('event', 'COMPLETED')
+								.appendParam('duration', extractedDuration.message)
+								.build()
+							logCaller(log, {
+								className,
+								methodName,
+								traceId: extractedTraceId.traceId,
+								params: extractedParams.params,
+								duration: extractedDuration.duration,
+								event: 'COMPLETED',
+							})
 						}
 						return result
 					})
 					.catch((error) => {
 						if (LoggerConfig.logEvents.error) {
-							errorLogCaller(
-								`[${className}] method=${methodName} ${extractedTraceId} event=FAILED ${extractDuration()} error=${error?.message ?? 'Unknown error'}`
-							)
+							const extractedDuration = extractDuration()
+							const log = new LogBuilder(`[${className}]`)
+								.appendParam('method', methodName)
+								.appendParam('traceId', extractedTraceId.message)
+								.appendParam('event', 'FAILED')
+								.appendParam('duration', extractedDuration.message)
+								.appendParam('error', error?.message ?? 'Unknown error')
+								.build()
+							errorLogCaller(log, {
+								className,
+								methodName,
+								traceId: extractedTraceId.traceId,
+								params: extractedParams.params,
+								duration: extractedDuration.duration,
+								error: error?.message ?? 'Unknown error',
+								event: 'FAILED',
+							})
 						}
 						throw error
 					})
 			}
 			if (LoggerConfig.logEvents.complete) {
-				logCaller(
-					`[${className}] method=${methodName} ${extractedTraceId} event=COMPLETED ${extractDuration()}`
-				)
+				const extractedDuration = extractDuration()
+				const log = new LogBuilder(`[${className}]`)
+					.appendParam('method', methodName)
+					.appendParam('traceId', extractedTraceId.message)
+					.appendParam('event', 'COMPLETED')
+					.appendParam('duration', extractedDuration.message)
+					.build()
+				logCaller(log, {
+					className,
+					methodName,
+					traceId: extractedTraceId.traceId,
+					params: extractedParams.params,
+					duration: extractedDuration.duration,
+					event: 'COMPLETED',
+				})
 			}
 			return returnValue
 		} catch (error: any) {
 			if (LoggerConfig.logEvents.error) {
-				errorLogCaller(
-					`[${className}] method=${methodName} ${extractedTraceId} event=FAILED ${extractDuration()} error=${error?.message ?? 'Unknown error'}`
-				)
+				const extractedDuration = extractDuration()
+				const log = new LogBuilder(`[${className}]`)
+					.appendParam('method', methodName)
+					.appendParam('traceId', extractedTraceId.message)
+					.appendParam('event', 'FAILED')
+					.appendParam('duration', extractedDuration.message)
+					.appendParam('error', error?.message ?? 'Unknown error')
+					.build()
+				errorLogCaller(log, {
+					className,
+					methodName,
+					traceId: extractedTraceId.traceId,
+					params: extractedParams.params,
+					duration: extractedDuration.duration,
+					error: error?.message ?? 'Unknown error',
+					event: 'FAILED',
+				})
 			}
 			throw error
 		}

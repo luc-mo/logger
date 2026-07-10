@@ -6,8 +6,14 @@ export const durationCalculator = () => {
 
 		if (isPlusThanOneSecond) {
 			const seconds = (end / 1000).toFixed(2)
-			return `duration=${seconds}s`
+			return {
+				message: `duration=${seconds}s`,
+				duration: end,
+			}
 		}
-		return `duration=${end}ms`
+		return {
+			message: `duration=${end}ms`,
+			duration: end,
+		}
 	}
 }

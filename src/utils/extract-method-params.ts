@@ -1,7 +1,7 @@
 import type { IMethodParams } from '@/types/logger'
 
 export const extractMethodParams = (args: any[], params?: IMethodParams) => {
-	if (!params || !params.length) return ''
+	if (!params || !params.length) return { params: {}, message: '' }
 	const extractedParams: Record<string, any> = {}
 
 	for (const param of params) {
@@ -13,5 +13,9 @@ export const extractMethodParams = (args: any[], params?: IMethodParams) => {
 			extractedParams[name] = args[index]
 		}
 	}
-	return `params=${JSON.stringify(extractedParams)}`
+
+	return {
+		params: extractedParams,
+		message: `params=${JSON.stringify(extractedParams)}`,
+	}
 }
