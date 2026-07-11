@@ -30,6 +30,9 @@ export const updateMethodDescriptor = (
 		const traceId = LoggerConfig.context.getStore()
 		const extractedParams = LoggerUtils.extractMethodParams(args, params)
 
+		const hasParams = Object.keys(extractedParams.params).length > 0
+		const paramsWrapper = hasParams ? { params: extractedParams.params } : {}
+
 		if (LoggerConfig.logEvents.start) {
 			const log = new LogBuilder(`[${className}]`)
 				.appendParam('method', methodName)
@@ -41,8 +44,8 @@ export const updateMethodDescriptor = (
 				className,
 				methodName,
 				traceId,
-				params: extractedParams.params,
 				event: 'STARTED',
+				...paramsWrapper,
 			})
 		}
 
@@ -65,9 +68,9 @@ export const updateMethodDescriptor = (
 								className,
 								methodName,
 								traceId,
-								params: extractedParams.params,
 								duration: extractedDuration.duration,
 								event: 'COMPLETED',
+								...paramsWrapper,
 							})
 						}
 						return result
@@ -87,10 +90,10 @@ export const updateMethodDescriptor = (
 								className,
 								methodName,
 								traceId,
-								params: extractedParams.params,
 								duration: extractedDuration.duration,
 								error: extractedError,
 								event: 'FAILED',
+								...paramsWrapper,
 							})
 						}
 						throw error
@@ -108,9 +111,9 @@ export const updateMethodDescriptor = (
 					className,
 					methodName,
 					traceId,
-					params: extractedParams.params,
 					duration: extractedDuration.duration,
 					event: 'COMPLETED',
+					...paramsWrapper,
 				})
 			}
 			return returnValue
@@ -129,10 +132,10 @@ export const updateMethodDescriptor = (
 					className,
 					methodName,
 					traceId,
-					params: extractedParams.params,
 					duration: extractedDuration.duration,
 					error: extractedError,
 					event: 'FAILED',
+					...paramsWrapper,
 				})
 			}
 			throw error
