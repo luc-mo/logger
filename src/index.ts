@@ -1,7 +1,8 @@
 import { LoggerConfig } from '@/core/config'
 import { LoggerUtils } from '@/utils'
+import { LogBuilder } from './core/log-builder'
 import { updateMethodDescriptor } from '@/core/update-method-descriptor'
-import type { ILoggerDecorator, ILoggerParams } from '@/types/logger'
+import type { ILoggerDecorator, ILoggerParams, ILoggerConfig, ILogSeverity } from '@/types/logger'
 
 /**
  * Decora clases o métodos para generar logs de forma automática.
@@ -81,6 +82,8 @@ LoggerDecorator.config = ({ level, logPrivateMethods, logger, logEvents }) => {
 	}
 }
 
+LoggerDecorator.builder = (initialMessage = '') => new LogBuilder(initialMessage)
+
 LoggerDecorator.fatal = LoggerUtils.logLevelCaller('FATAL')
 LoggerDecorator.error = LoggerUtils.logLevelCaller('ERROR')
 LoggerDecorator.warn = LoggerUtils.logLevelCaller('WARN')
@@ -88,4 +91,10 @@ LoggerDecorator.info = LoggerUtils.logLevelCaller('INFO')
 LoggerDecorator.debug = LoggerUtils.logLevelCaller('DEBUG')
 LoggerDecorator.trace = LoggerUtils.logLevelCaller('TRACE')
 
-export { LoggerDecorator as Logger }
+export {
+	LoggerDecorator as Logger,
+	type ILoggerDecorator,
+	type ILoggerParams,
+	type ILoggerConfig,
+	type ILogSeverity,
+}

@@ -1,5 +1,6 @@
 import type { AsyncLocalStorage } from 'node:async_hooks'
 import type { IDualDecorator } from './dual-decorator'
+import type { LogBuilder } from '@/core/log-builder'
 
 export type ILoggerDecorator = ((params: ILoggerParams) => IDualDecorator) & {
 	/**
@@ -17,6 +18,15 @@ export type ILoggerDecorator = ((params: ILoggerParams) => IDualDecorator) & {
 	 * @param params Objeto con el nivel de log (`level`) y la instancia del logger (`logger`).
 	 */
 	config: (params: ILoggerConfig) => void
+
+	/**
+	 * Crea una nueva instancia de `LogBuilder` para construir mensajes de log
+	 * de forma incremental, permitiendo encadenar texto y parámetros antes
+	 * de generar el mensaje final.
+	 *
+	 * @param initialMessage Mensaje inicial opcional a partir del cual se construirá el log.
+	 */
+	builder: (initialMessage?: string) => LogBuilder
 
 	fatal: ILogFunction
 	error: ILogFunction
